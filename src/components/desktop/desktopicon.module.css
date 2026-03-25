@@ -1,0 +1,28 @@
+.icon {
+    width: 74px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    padding-bottom: 22px;
+}
+
+.icon img {
+    width: 32px;
+    height: 32px;
+    display: block;
+}
+
+.label {
+    color: white;
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.2;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.7);
+    user-select: none;
+}
+
+.selected {
+    background-color: #316ac5;
+}
