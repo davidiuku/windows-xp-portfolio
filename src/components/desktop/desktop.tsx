@@ -2,7 +2,7 @@ import { useState } from "react";
 import MyComputer from "../../assets/mycomputer.png"
 import RecycleBinEmpty from "../../assets/recyclebinempty.png"
 import style from "./desktop.module.css"
-import { DesktopIcon } from "./desktopIcon"
+import { DesktopIcon } from "./desktopicon"
 
 
 const desktopItems = [

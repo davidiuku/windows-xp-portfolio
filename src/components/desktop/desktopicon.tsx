@@ -12,9 +12,14 @@ type Props = {
 
 export const DesktopIcon = ({ item, isSelected, onClick }: Props) => {
     return (
-        <div className={`${style.icon} ${isSelected ? style.selected : ""}`} onClick={onClick}>
-            <img src={item.icon} alt={item.label} />
-            <span className={`${style.label} ${isSelected ? style.selected : ""}`}>{item.label}</span>
+        <div className={style.icon} onClick={onClick}>
+            <div
+                className={`${style.iconImage} ${isSelected ? style.iconImageSelected : ""}`}
+                style={{ "--icon-url": `url(${item.icon})` } as React.CSSProperties}
+            >
+                <img src={item.icon} alt={item.label} />
+            </div>
+            <span className={`${style.label} ${isSelected ? style.labelSelected : ""}`}>{item.label}</span>
         </div>
     );
 };
