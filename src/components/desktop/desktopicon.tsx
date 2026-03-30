@@ -11,8 +11,13 @@ type Props = {
 };
 
 export const DesktopIcon = ({ item, isSelected, onClick }: Props) => {
+    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation();
+        onClick();
+    }
+
     return (
-        <div className={style.icon} onClick={onClick}>
+        <div className={style.icon} onClick={handleClick}>
             <div
                 className={`${style.iconImage} ${isSelected ? style.iconImageSelected : ""}`}
                 style={{ "--icon-url": `url(${item.icon})` } as React.CSSProperties}

@@ -14,7 +14,7 @@ export const Desktop = () => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null)
 
     return (
-        <div className={style.desktop}>
+        <div className={style.desktop} onClick={() => setSelectedId(null)}>
             {desktopItems.map(item => (
                 <DesktopIcon
                     key={item.id}
