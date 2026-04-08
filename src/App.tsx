@@ -5,10 +5,10 @@ import { Taskbar } from './components/taskbar'
 function App() {
 
   return (
-    <>
+    <div className='app'>
     <Desktop />
     <Taskbar />
-    </>
+    </div>
   )
 }
 
