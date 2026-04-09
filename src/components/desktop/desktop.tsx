@@ -37,6 +37,10 @@ export const Desktop = () => {
 
     }
 
+    const handleCloseWindow = (item : DesktopItems) => {
+        setOpenWindows(prev => prev.filter(window => window.id !== item.id))
+    }
+
     return (
         <div className={style.desktop} onClick={() => setSelectedId(null)}>
             {desktopItems.map(item => (
@@ -52,7 +56,7 @@ export const Desktop = () => {
                 <DesktopWindow
                     key={item.id}
                     item={item}
-
+                    onClose={() => handleCloseWindow(item)}
                 />
             ))}
         </div>

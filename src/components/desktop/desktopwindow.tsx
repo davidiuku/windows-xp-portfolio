@@ -1,4 +1,7 @@
 import style from "./desktopwindow..module.css"
+import Minimize from "../../assets/Minimize.png"
+import Maximize from "../../assets/Maximize.png"
+import Exit from "../../assets/Exit.png"
 
 type Props = {
     item: {
@@ -6,9 +9,14 @@ type Props = {
         label: string;
         icon: string;
     };
-}
+    onClose: () => void;
+};
 
-export const DesktopWindow = ({ item }: Props) => {
+export const DesktopWindow = ({ item, onClose }: Props) => {
+    const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation()
+        onClose();
+    }
 
     return (
         <div className={style.window}>
@@ -19,6 +27,17 @@ export const DesktopWindow = ({ item }: Props) => {
                     <img src={item.icon} alt={item.label} />
                 </div>
                 <span>{item.label}</span>
+                <div className={style.titleControls}>
+                    <button className={style.titleButton}>
+                        <img src={Minimize} alt="Minimize"/>
+                    </button>
+                    <button className={style.titleButton}>
+                        <img src={Maximize} alt="Maximize"/>
+                    </button>
+                    <button className={style.titleButton} onClick={handleClose}>
+                        <img src={Exit} alt="Exit"/>
+                    </button>
+                </div>
             </div>
             <div className={style.windowBody}>
                 <div className={style.menuBar}>

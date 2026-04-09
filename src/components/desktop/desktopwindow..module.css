@@ -1,4 +1,6 @@
 .window {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     width: 40vw;
     height: 50vh;
@@ -14,40 +16,63 @@
 
 .titleBar {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    padding: 3px;
-    padding-top: 6px;
-    background: linear-gradient(
+    padding: 4px 4px 2px;
+    background:
+        radial-gradient(circle at 0% 0%, rgb(3, 57, 184), transparent 10%),
+        linear-gradient(
         #3168d5 1px,
         #4891e5 2px 3px,
         #245dda 5px,
         #235bd6,
         #2d69e9 27px
-    );
+        );
     box-shadow: inset -1px 0 0 0 #0b3051, inset 0px -2px 2px rgba(0,0,0,0.4);
 }
 
 .titleBar img {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
 }
 
 .titleBar span {
     color: white;
-    font-size: 11px;
-    text-align: center;
-    line-height: 1.;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1;
     text-shadow: 1px 1px 0 rgba(0,0,0,0.7);
     user-select: none;
-    padding-left: 3px;
+    padding-left: 4px;
+}
+
+.titleControls {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.titleButton {
+    all:unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.titleButton:hover img {
+    filter:brightness(1.08)
+}
+
+.titleButton:active img {
+    filter: brightness(0.85);
 }
 
 .windowBody {
     border: 1px solid #0144d0;
     display: flex;
-    height: 100%;
     flex-direction: column;
+    flex: 1;
 }
 
 .menuBar {

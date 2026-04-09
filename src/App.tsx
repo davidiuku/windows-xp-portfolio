@@ -1,6 +1,6 @@
 import './App.css'
 import { Desktop } from './components/desktop/desktop'
-import { Taskbar } from './components/taskbar'
+import { Taskbar } from './components/taskbar/taskbar'
 
 function App() {
 
