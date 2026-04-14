@@ -78,18 +78,141 @@
 .menuBar {
     background-color: #f0eee0;
     border-bottom: 1px solid #d8d2bd;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+}
+
+.menuBar button {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 4px 8px 4px 8px;
+    font-size: 11px;
+}
+
+.menuBar button:hover {
+    background: #316ac5;
+    color: white;
+}
+.menuBar img {
+    margin-left: auto;
+    padding: 2px 9px 2px 9px;
+    height: 24px;
+    background-color: #ffffff;
+    box-shadow: inset 1px 0 0 rgb(216, 210, 189);
 }
 
 .toolBar {
     background-color: #f0eee0;
     border-top: 1px solid #ffffff;
     border-bottom: 1px solid #d8d2bd;
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+    padding-top: 4px;
+    padding-bottom: 2px;
+}
+
+.toolBar span {
+    font-size: 11px;
+    transform: translateY(-1px)
+}
+
+.toolBar img {
+    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.3))
+}
+
+.arrow {
+    position: relative;
+    top: 2px;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 4px solid black;
+}
+
+.arrowDivider {
+    width: 1px;
+    height: 24px;
+    padding: 0;
+    background-color: transparent;
+    position: relative;
+}
+
+.toolBar button {
+    appearance: none;
+    border: 1px solid transparent;
+    background: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-top: 4px;
+    padding-bottom: 2px;
+}
+
+.toolBar button:hover {
+    border: 1px solid #d8d2bd;
+    border-radius: 4px;
+    box-shadow: inset 0 -1px 1px 0 #d8d2bd;
+}
+
+.toolBar button:hover img {
+    filter: brightness(0.94) drop-shadow(1px 1px 0 rgba(0,0,0,0.3));
+}
+
+.toolBar button:hover .arrowDivider {
+    background-color: #d8d2bd;
+}
+
+.toolBar img {
+    height: 24px;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+}
+
+.groupDivider {
+    height: 70%;
+    width: 1px;
+    height: 24px;
+    background-color: #cac6af;
 }
 
 .addressBar {
     background-color: #f0eee0;
     border-top: 1px solid #ffffff;
     border-bottom: 1px solid #d8d2bd;
+    display: flex;
+    align-items: center;
+    padding-right: 24px;
+    padding-left: 4px;
+    font-size: 12px;
+    gap: 2px;
+}
+
+.pathField {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    background: #ffffff;
+    gap: 5px;
+    border: 1px solid #7f9db9;
+    padding: 2px;
+}
+
+.pathField img {
+    width: 16px;
+}
+
+.goArea {
+    display: flex;
+    align-items: center;
+}
+
+.goArea img {
+    width: 20px;
 }
 
 .contentArea {

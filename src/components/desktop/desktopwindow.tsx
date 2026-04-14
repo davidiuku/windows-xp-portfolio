@@ -2,6 +2,14 @@ import style from "./desktopwindow..module.css"
 import Minimize from "../../assets/Minimize.png"
 import Maximize from "../../assets/Maximize.png"
 import Exit from "../../assets/Exit.png"
+import Back from "../../assets/Back.png"
+import Forward from "../../assets/Forward.png"
+import Search from "../../assets/Search.png"
+import Up from "../../assets/Up.png"
+import FolderView from "../../assets/FolderView.png"
+import IconView from "../../assets/IconView.png"
+import startlogo from "../../assets/startlogo.png"
+import Go from "../../assets/Go.png"
 
 type Props = {
     item: {
@@ -21,9 +29,7 @@ export const DesktopWindow = ({ item, onClose }: Props) => {
     return (
         <div className={style.window}>
             <div className={style.titleBar}>
-                <div
-                    style={{ "--icon-url": `url(${item.icon})` } as React.CSSProperties}
-                >
+                <div>
                     <img src={item.icon} alt={item.label} />
                 </div>
                 <span>{item.label}</span>
@@ -41,13 +47,71 @@ export const DesktopWindow = ({ item, onClose }: Props) => {
             </div>
             <div className={style.windowBody}>
                 <div className={style.menuBar}>
-                    File Edit View Favorites Tools Help
+                    <button>
+                        File
+                    </button>
+                    <button>
+                        Edit
+                    </button>
+                    <button>
+                        View
+                    </button>
+                    <button>
+                        Favorites
+                    </button>
+                    <button>
+                        Tools
+                    </button>
+                    <button>
+                        Help
+                    </button>
+                    <img src={startlogo} alt="Windows Logo" />
                 </div>
                 <div className={style.toolBar}>
-                    {"<-"} Back {"->"} Search Folders
+                    <div className={style.group}>
+                        <button>
+                            <img src={Back} alt="Back Button"/>
+                            <span>Back</span>
+                            <span className={style.arrowDivider}></span>
+                            <span className={style.arrow}></span>
+                        </button>
+                        <button>
+                            <img src={Forward} alt="Forward Button"/>
+                            <span className={style.arrowDivider}></span>
+                            <span className={style.arrow}></span>
+                        </button>
+                        <button>
+                            <img src={Up} alt="Up Button"/>
+                        </button>
+                    </div>
+                    <div className={style.groupDivider}></div>
+                    <div className={style.group}>
+                        <button>
+                            <img src={Search} />
+                            <span>Search</span>
+                        </button>
+                        <button>
+                            <img src={FolderView} alt="Folder View Button"/>
+                            <span>Folders</span>
+                        </button>
+                    </div>
+                    <div className={style.groupDivider}></div>
+                    <button>
+                        <img src={IconView} alt="Icon View Button" />
+                        <span className={style.arrowDivider}></span>
+                        <span className={style.arrow}></span>
+                    </button>
                 </div>
                 <div className={style.addressBar}>
-                    Address
+                    <span>Address</span>
+                    <div className={style.pathField}>
+                        <img src={item.icon} alt="File Icon" />
+                        <span>{item.label}</span>
+                    </div>
+                    <div className={style.goArea}>
+                        <img src={Go} alt="Go Button" />
+                        <span>Go</span>
+                    </div>
                 </div>
                 <div className={style.contentArea}>
                     <div className={style.sideBar}>
