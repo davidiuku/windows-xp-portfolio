@@ -10,6 +10,12 @@ import FolderView from "../../assets/FolderView.png"
 import IconView from "../../assets/IconView.png"
 import startlogo from "../../assets/startlogo.png"
 import Go from "../../assets/Go.png"
+import NewFolder from "../../assets/NewFolder.png"
+import Rename from "../../assets/Rename.png"
+import Delete from "../../assets/Delete.png"
+import MyDocuments from "../../assets/MyDocuments.png"
+import Desktop from "../../assets/Desktop.png"
+import MyComputer from "../../assets/mycomputer.png"
 
 type Props = {
     item: {
@@ -115,7 +121,58 @@ export const DesktopWindow = ({ item, onClose }: Props) => {
                 </div>
                 <div className={style.contentArea}>
                     <div className={style.sideBar}>
-                        sidebar
+                        <div className={style.panel}>
+                            <div className={style.panelHeader}>
+                                <span>File and Folder Tasks</span>
+                                <button className={style.panelToggle} aria-label="Collapse section">
+                                    <span className={style.panelToggleArrow}></span>
+                                </button>
+                            </div>
+                            <div className={style.panelBody}>
+                                <button className={style.panelItem}>
+                                    <img src={NewFolder} alt="Create New Folder" />
+                                    <span>Make a New folder</span>
+                                </button>
+                                <button className={style.panelItem}>
+                                    <img src={Rename} alt="Rename " />
+                                    <span>Rename this selection</span>
+                                </button>
+                                <button className={style.panelItem}>
+                                    <img src={Delete} alt="Delete Selection" />
+                                    <span>Delete this selection</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div className={style.panel}>
+                            <div className={style.panelHeader}>
+                                <span>Other Places</span>
+                                <button className={style.panelToggle} aria-label="Collapse section">
+                                    <span className={style.panelToggleArrow}></span>
+                                </button>
+                            </div>
+                            <div className={style.panelBody}>
+                                <button className={style.panelItem}>
+                                    <img src={Desktop} alt="Desktop" />
+                                    <span>Desktop</span>
+                                </button>
+                                <button className={style.panelItem}>
+                                    <img src={MyDocuments} alt="My Documents" />
+                                    <span>My Documents</span>
+                                </button>
+                                <button className={style.panelItem}>
+                                    <img src={MyComputer} alt="My Computer" />
+                                    <span>My Computer</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div className={style.panel}>
+                            <div className={style.panelHeader}>
+                                <span>Details</span>
+                                <button className={style.panelToggle} aria-label="Collapse section">
+                                    <span className={style.panelToggleArrow}></span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div className={style.mainPane}>
                         mainPane
@@ -123,6 +180,5 @@ export const DesktopWindow = ({ item, onClose }: Props) => {
                 </div>
             </div>
         </div>
-
     );
 };
