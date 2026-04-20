@@ -16,6 +16,9 @@ import Delete from "../../assets/Delete.png"
 import MyDocuments from "../../assets/MyDocuments.png"
 import Desktop from "../../assets/Desktop.png"
 import MyComputer from "../../assets/mycomputer.png"
+import LocalDisk from "../../assets/LocalDisk.png"
+import CDRW from "../../assets/CDRW.png"
+import { useState } from "react"
 
 type Props = {
     item: {
@@ -27,10 +30,19 @@ type Props = {
 };
 
 export const DesktopWindow = ({ item, onClose }: Props) => {
+    const [ selectedId, setSelectedId ] = useState<string | null>(null)
+
     const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation()
+        event.stopPropagation();
         onClose();
     }
+
+    const drives = [
+        { id: "c", label: "Local Disk (C:)", icon: LocalDisk },
+        { id: "d", label: "Local Disk (D:)", icon: LocalDisk },
+        { id: "e", label: "CD Drive (E:)", icon: CDRW }
+    ]
+
 
     return (
         <div className={style.window}>
@@ -174,8 +186,25 @@ export const DesktopWindow = ({ item, onClose }: Props) => {
                             </div>
                         </div>
                     </div>
-                    <div className={style.mainPane}>
-                        mainPane
+                    <div className={style.mainPane} onClick={()=> {setSelectedId(null)}}>
+                        {drives.map(drive => (
+                            <button
+                                key={drive.id}
+                                className={style.driveButton}
+                                onClick={(event)=> {
+                                    event.stopPropagation()
+                                    setSelectedId(drive.id)
+                                }}
+                            >
+                                <span
+                                    className={`${style.iconImage} ${selectedId === drive.id ? style.iconImageSelected : ""}`}
+                                    style={{ "--icon-url": `url(${drive.icon})` } as React.CSSProperties}
+                                >
+                                    <img src={drive.icon} alt={drive.label} />
+                                </span>
+                                <span className={`${selectedId === drive.id ? style.driveLabelSelected : ""}`}>{drive.label}</span>
+                            </button>
+                        ))}
                     </div>
                 </div>
             </div>
