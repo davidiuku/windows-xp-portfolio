@@ -27,9 +27,11 @@ type Props = {
         icon: string;
     };
     onClose: () => void;
+    zIndex: number;
+    onFocus: () => void;
 };
 
-export const DesktopWindow = ({ item, onClose }: Props) => {
+export const DesktopWindow = ({ item, onClose, zIndex, onFocus }: Props) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null);
     const [ position, setPosition ] = useState({ x: 800, y: 300 });
 
@@ -97,7 +99,12 @@ export const DesktopWindow = ({ item, onClose }: Props) => {
 
 
     return (
-        <div ref={windowRef} className={style.window} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
+        <div
+            ref={windowRef}
+            className={style.window}
+            style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: zIndex }}
+            onMouseDown={onFocus}
+        >
             <div ref={titleBarRef} className={style.titleBar}>
                 <div>
                     <img src={item.icon} alt={item.label} />
