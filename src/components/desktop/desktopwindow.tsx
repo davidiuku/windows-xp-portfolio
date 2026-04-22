@@ -18,7 +18,7 @@ import Desktop from "../../assets/Desktop.png"
 import MyComputer from "../../assets/mycomputer.png"
 import LocalDisk from "../../assets/LocalDisk.png"
 import CDRW from "../../assets/CDRW.png"
-import { useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 type Props = {
     item: {
@@ -30,23 +30,75 @@ type Props = {
 };
 
 export const DesktopWindow = ({ item, onClose }: Props) => {
-    const [ selectedId, setSelectedId ] = useState<string | null>(null)
+    const [ selectedId, setSelectedId ] = useState<string | null>(null);
+    const [ position, setPosition ] = useState({ x: 800, y: 300 });
 
     const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         onClose();
-    }
+    };
 
     const drives = [
         { id: "c", label: "Local Disk (C:)", icon: LocalDisk },
         { id: "d", label: "Local Disk (D:)", icon: LocalDisk },
         { id: "e", label: "CD Drive (E:)", icon: CDRW }
-    ]
+    ];
+
+    const windowRef = useRef<HTMLDivElement>(null);
+    const titleBarRef = useRef<HTMLDivElement>(null);
+    const isDragging = useRef(false);
+    const dragOffset = useRef({ x: 0, y: 0});
+
+
+
+    useEffect(() => {
+        if (!windowRef.current || !titleBarRef.current) return;
+
+        const titleBar = titleBarRef.current;
+
+        const onMouseDown = (event:MouseEvent) => {
+            event.preventDefault();
+
+            const rect = windowRef.current?.getBoundingClientRect()
+            if (!rect) return;
+
+            isDragging.current = true;
+            dragOffset.current = {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top
+            };
+        };
+
+        const onMouseMove = (event: MouseEvent) => {
+            if (!isDragging.current) return;
+
+            setPosition({
+                x: event.clientX - dragOffset.current.x,
+                y: event.clientY - dragOffset.current.y
+            });
+        };
+
+        const onMouseUp = () => {
+            isDragging.current = false;
+        }
+
+        titleBar.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mousemove', onMouseMove)
+        window.addEventListener('mouseup', onMouseUp);
+
+
+        const cleanup = () => {
+            titleBar.removeEventListener('mousedown', onMouseDown);
+            window.removeEventListener('mousemove', onMouseMove)
+            window.removeEventListener('mouseup', onMouseUp);
+        }
+        return cleanup;
+    }, [])
 
 
     return (
-        <div className={style.window}>
-            <div className={style.titleBar}>
+        <div ref={windowRef} className={style.window} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
+            <div ref={titleBarRef} className={style.titleBar}>
                 <div>
                     <img src={item.icon} alt={item.label} />
                 </div>
