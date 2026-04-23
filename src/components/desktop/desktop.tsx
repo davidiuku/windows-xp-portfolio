@@ -29,12 +29,17 @@ export const Desktop = () => {
     const [ openWindows, setOpenWindows ] = useState<OpenWindow[]>([])
     const [ windowZIndexes, setWindowZIndexes ] = useState<Record<string, number>>({});
     const [ topZ, setTopZ ] = useState(1);
+    const [ inFocus, setInFocus ] = useState<OpenWindow["id"] | null>(null)
 
     const handleOpenWindow = (item : DesktopItems) => {
         const alreadyOpen = openWindows.some(window => window.id === item.id)
 
         if (!alreadyOpen) {
             setOpenWindows(prev => [...prev, item])
+            setInFocus(item.id)
+        } else {
+            setInFocus(item.id)
+            bringToFront(item.id)
         }
 
     }
@@ -50,6 +55,8 @@ export const Desktop = () => {
         }));
 
         setTopZ((prev) => prev + 1)
+
+        setInFocus(id)
     }
 
     return (
@@ -70,6 +77,7 @@ export const Desktop = () => {
                     onClose={() => handleCloseWindow(item)}
                     zIndex={windowZIndexes[item.id] ?? 1}
                     onFocus={() => bringToFront(item.id)}
+                    inFocus={item.id === inFocus}
                 />
             ))}
         </div>

@@ -29,9 +29,10 @@ type Props = {
     onClose: () => void;
     zIndex: number;
     onFocus: () => void;
+    inFocus: boolean;
 };
 
-export const DesktopWindow = ({ item, onClose, zIndex, onFocus }: Props) => {
+export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus }: Props) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null);
     const [ position, setPosition ] = useState({ x: 800, y: 300 });
 
@@ -101,11 +102,14 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus }: Props) => {
     return (
         <div
             ref={windowRef}
-            className={style.window}
+            className={`${style.window} ${inFocus ? style.focused : style.unfocused}`}
             style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: zIndex }}
             onMouseDown={onFocus}
         >
-            <div ref={titleBarRef} className={style.titleBar}>
+            <div
+                ref={titleBarRef}
+                className={style.titleBar}
+            >
                 <div>
                     <img src={item.icon} alt={item.label} />
                 </div>
