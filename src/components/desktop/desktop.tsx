@@ -60,7 +60,13 @@ export const Desktop = () => {
     }
 
     return (
-        <div className={style.desktop} onClick={() => setSelectedId(null)}>
+        <div
+            className={style.desktop}
+            onClick={() => {
+                setSelectedId(null)
+            
+            }}
+        >
             {desktopItems.map(item => (
                 <DesktopIcon
                     key={item.id}
