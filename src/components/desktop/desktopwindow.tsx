@@ -53,17 +53,16 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus }: Props
     const isDragging = useRef(false);
     const dragOffset = useRef({ x: 0, y: 0});
 
-
-
     useEffect(() => {
         if (!windowRef.current || !titleBarRef.current) return;
 
         const titleBar = titleBarRef.current;
+        const windowElement = windowRef.current;
 
         const onMouseDown = (event:MouseEvent) => {
             event.preventDefault();
 
-            const rect = windowRef.current?.getBoundingClientRect()
+            const rect = windowElement.getBoundingClientRect()
             if (!rect) return;
 
             isDragging.current = true;

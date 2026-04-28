@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import MyComputer from "../../assets/mycomputer.png"
 import RecycleBinEmpty from "../../assets/recyclebinempty.png"
 import style from "./desktop.module.css"
 import { DesktopIcon } from "./desktopicon"
 import { DesktopWindow } from "./desktopwindow";
+import type { OpenWindow } from "../../types";
 
-type OpenWindow = {
-    id: string;
-    label: string;
-    icon: string;
+type DesktopProps = {
+    openWindows: OpenWindow[];
+    setOpenWindows: Dispatch<SetStateAction<OpenWindow[]>>;
+    inFocus: OpenWindow["id"] | null;
+    setInFocus: Dispatch<SetStateAction<OpenWindow["id"] | null>>;
 }
 
 type DesktopItems = {
@@ -24,12 +26,12 @@ const desktopItems = [
 
 
 
-export const Desktop = () => {
+export const Desktop = ({ openWindows, setOpenWindows, inFocus, setInFocus }: DesktopProps) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null)
-    const [ openWindows, setOpenWindows ] = useState<OpenWindow[]>([])
+
     const [ windowZIndexes, setWindowZIndexes ] = useState<Record<string, number>>({});
     const [ topZ, setTopZ ] = useState(1);
-    const [ inFocus, setInFocus ] = useState<OpenWindow["id"] | null>(null)
+
 
     const handleOpenWindow = (item : DesktopItems) => {
         const alreadyOpen = openWindows.some(window => window.id === item.id)
@@ -64,7 +66,7 @@ export const Desktop = () => {
             className={style.desktop}
             onClick={() => {
                 setSelectedId(null)
-            
+
             }}
         >
             {desktopItems.map(item => (
