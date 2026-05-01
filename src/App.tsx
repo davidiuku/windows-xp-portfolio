@@ -6,8 +6,25 @@ import type { OpenWindow } from './types'
 
 
 function App() {
-  const [ openWindows, setOpenWindows ] = useState<OpenWindow[]>([])
-  const [ inFocus, setInFocus ] = useState<OpenWindow["id"] | null>(null)
+  const [ openWindows, setOpenWindows ] = useState<OpenWindow[]>([]);
+  const [ inFocus, setInFocus ] = useState<OpenWindow["id"] | null>(null);
+  const [ windowZIndexes, setWindowZIndexes ] = useState<Record<string, number>>({});
+  const [ topZ, setTopZ ] = useState(1);
+
+  const bringToFront = (id: OpenWindow["id"]) => {
+        setWindowZIndexes((prev) => ({
+            ...prev,
+            [id]: topZ,
+        }));
+
+        setTopZ((prev) => prev + 1)
+
+        setInFocus(id)
+    }
+
+  const minimizeWindow = (id: OpenWindow["id"]) => {
+
+  }
 
   return (
     <div className='app'>
@@ -15,13 +32,13 @@ function App() {
       openWindows={openWindows}
       setOpenWindows={setOpenWindows}
       inFocus={inFocus}
-      setInFocus={setInFocus}
+      windowZIndexes={windowZIndexes}
+      bringToFront={bringToFront}
     />
     <Taskbar
       openWindows={openWindows}
-      setOpenWindows={setOpenWindows}
       inFocus={inFocus}
-      setInFocus={setInFocus}
+      bringToFront={bringToFront}
     />
     </div>
   )

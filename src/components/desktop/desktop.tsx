@@ -10,7 +10,8 @@ type DesktopProps = {
     openWindows: OpenWindow[];
     setOpenWindows: Dispatch<SetStateAction<OpenWindow[]>>;
     inFocus: OpenWindow["id"] | null;
-    setInFocus: Dispatch<SetStateAction<OpenWindow["id"] | null>>;
+    windowZIndexes: Record<string, number>;
+    bringToFront: (id: string) => void;
 }
 
 type DesktopItems = {
@@ -20,45 +21,32 @@ type DesktopItems = {
 };
 
 const desktopItems = [
-    { id: "my-computer", label: "My Computer", icon: MyComputer },
-    { id: "recycle-bin", label: "Recycle Bin", icon: RecycleBinEmpty },
+    { id: "my-computer", label: "My Computer", icon: MyComputer},
+    { id: "recycle-bin", label: "Recycle Bin", icon: RecycleBinEmpty},
 ];
 
 
 
-export const Desktop = ({ openWindows, setOpenWindows, inFocus, setInFocus }: DesktopProps) => {
+export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, bringToFront }: DesktopProps) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null)
-
-    const [ windowZIndexes, setWindowZIndexes ] = useState<Record<string, number>>({});
-    const [ topZ, setTopZ ] = useState(1);
-
 
     const handleOpenWindow = (item : DesktopItems) => {
         const alreadyOpen = openWindows.some(window => window.id === item.id)
 
         if (!alreadyOpen) {
-            setOpenWindows(prev => [...prev, item])
-            setInFocus(item.id)
-        } else {
-            setInFocus(item.id)
-            bringToFront(item.id)
+            const newWindow = {
+                ...item,
+                isMinimized: false,
+            };
+
+            setOpenWindows(prev => [...prev, newWindow])
         }
 
+        bringToFront(item.id)
     }
 
     const handleCloseWindow = (item : DesktopItems) => {
         setOpenWindows(prev => prev.filter(window => window.id !== item.id))
-    }
-
-    const bringToFront = (id: string) => {
-        setWindowZIndexes((prev) => ({
-            ...prev,
-            [id]: topZ,
-        }));
-
-        setTopZ((prev) => prev + 1)
-
-        setInFocus(id)
     }
 
     return (
@@ -66,7 +54,6 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, setInFocus }: De
             className={style.desktop}
             onClick={() => {
                 setSelectedId(null)
-
             }}
         >
             {desktopItems.map(item => (
