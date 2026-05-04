@@ -12,18 +12,44 @@ function App() {
   const [ topZ, setTopZ ] = useState(1);
 
   const bringToFront = (id: OpenWindow["id"]) => {
-        setWindowZIndexes((prev) => ({
-            ...prev,
-            [id]: topZ,
-        }));
+    setWindowZIndexes((prev) => ({
+        ...prev,
+        [id]: topZ,
+    }));
 
-        setTopZ((prev) => prev + 1)
+    setTopZ((prev) => prev + 1);
 
-        setInFocus(id)
-    }
+    setInFocus(id);
+  };
 
   const minimizeWindow = (id: OpenWindow["id"]) => {
+    setOpenWindows(prev =>
+      prev.map(window => {
+        if (window.id === id) {
+          return {
+            ...window,
+            isMinimized: true,
+          };
+        } else {
+          return window;
+        }
+      })
+     );
+  };
 
+  const restoreWindow = (id: OpenWindow["id"]) => {
+    setOpenWindows(prev =>
+      prev.map(window => {
+        if (window.id === id) {
+          return {
+            ...window,
+            isMinimized: false,
+          };
+        } else {
+          return window
+        }
+      })
+    );
   }
 
   return (
@@ -38,7 +64,10 @@ function App() {
     <Taskbar
       openWindows={openWindows}
       inFocus={inFocus}
+      setInFocus={setInFocus}
       bringToFront={bringToFront}
+      minimizeWindow={minimizeWindow}
+      restoreWindow={restoreWindow}
     />
     </div>
   )

@@ -11,7 +11,7 @@ type DesktopProps = {
     setOpenWindows: Dispatch<SetStateAction<OpenWindow[]>>;
     inFocus: OpenWindow["id"] | null;
     windowZIndexes: Record<string, number>;
-    bringToFront: (id: string) => void;
+    bringToFront: (id: OpenWindow["id"]) => void;
 }
 
 type DesktopItems = {
@@ -65,7 +65,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
                     onDoubleClick={() => handleOpenWindow(item)}
                 />
             ))}
-            {openWindows.map(item => (
+            {openWindows.filter(window => !window.isMinimized).map(item => (
                 <DesktopWindow
                     key={item.id}
                     item={item}

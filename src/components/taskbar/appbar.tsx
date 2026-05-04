@@ -1,15 +1,25 @@
 import style from "./taskbar.module.css"
 import type { OpenWindow } from "../../types";
+import type { Dispatch, SetStateAction } from "react";
 
 type AppBarProps = {
     openWindows: OpenWindow[];
     inFocus: OpenWindow["id"] | null;
-    bringToFront: (id: string) => void;
+    setInFocus: Dispatch<SetStateAction<OpenWindow["id"] | null>>
+    bringToFront: (id: OpenWindow["id"]) => void;
+    minimizeWindow: (id:OpenWindow["id"]) => void;
+    restoreWindow: (id:OpenWindow["id"]) => void;
 }
 
-export const AppBar = ({ openWindows, inFocus, bringToFront }: AppBarProps) => {
+export const AppBar = ({ openWindows, inFocus, setInFocus, bringToFront, minimizeWindow, restoreWindow }: AppBarProps) => {
     const handleClick = (item: OpenWindow) => {
-        if (!(item.id === inFocus)) {
+        if (item.isMinimized) {
+            restoreWindow(item.id);
+            bringToFront(item.id);
+        } else if (item.id === inFocus) {
+            minimizeWindow(item.id)
+            setInFocus(null)
+        } else {
             bringToFront(item.id)
         }
     };
