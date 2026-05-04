@@ -20,23 +20,21 @@ import LocalDisk from "../../assets/LocalDisk.png";
 import CDRW from "../../assets/CDRW.png";
 import { useEffect, useState, useRef } from "react";
 import { Resizable } from "re-resizable";
+import type { OpenWindow } from "../../types";
 
 type Props = {
-    item: {
-        id: string;
-        label: string;
-        icon: string;
-    };
+    item: OpenWindow;
     onClose: () => void;
     zIndex: number;
     onFocus: () => void;
     inFocus: boolean;
     onMinimize: () => void;
+    updateWindowPosition: (id: OpenWindow["id"], position: OpenWindow["position"]) => void;
+    updateWindowSize: (id: OpenWindow["id"], size: OpenWindow["size"]) => void;
 };
 
-export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinimize }: Props) => {
+export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinimize, updateWindowPosition, updateWindowSize }: Props) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null);
-    const [ position, setPosition ] = useState({ x: 800, y: 300 });
 
     const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
@@ -81,10 +79,10 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
         const onMouseMove = (event: MouseEvent) => {
             if (!isDragging.current) return;
 
-            setPosition({
-                x: event.clientX - dragOffset.current.x,
-                y: event.clientY - dragOffset.current.y
-            });
+            updateWindowPosition(
+                item.id,
+                {x: event.clientX - dragOffset.current.x, y: event.clientY - dragOffset.current.y}
+            );
         };
 
         const onMouseUp = () => {
@@ -110,13 +108,13 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
         <div
             ref={windowRef}
             className={`${style.window} ${inFocus ? style.focused : style.unfocused}`}
-            style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: zIndex }}
+            style={{ left: `${item.position.x}px`, top: `${item.position.y}px`, zIndex: zIndex }}
             onMouseDown={onFocus}
         >
             <Resizable
                 defaultSize={{
-                    width: 600,
-                    height: 400,
+                    width: item.size.width,
+                    height: item.size.height,
                 }}
                 minWidth={600}
                 minHeight={400}
@@ -147,20 +145,25 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                         }
                     }
                 }}
-                onResizeStop={(_, direction, __, delta) => {
+                onResizeStop={(_, direction, ref, delta) => {
                     const resizeDirection = direction.toLowerCase();
 
                     const isLeft = resizeDirection.includes("left");
                     const isTop = resizeDirection.includes("top");
 
-                    setPosition({
+                    updateWindowPosition(item.id, {
                         x: isLeft
                             ? resizeStartPosition.current.x - delta.width
-                            : position.x,
+                            : item.position.x,
 
                         y: isTop
                             ? resizeStartPosition.current.y - delta.height
-                            : position.y
+                            : item.position.y
+                    });
+
+                    updateWindowSize(item.id, {
+                        width: ref.offsetWidth,
+                        height: ref.offsetHeight
                     });
                 }}
             >
