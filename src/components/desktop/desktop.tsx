@@ -12,6 +12,7 @@ type DesktopProps = {
     inFocus: OpenWindow["id"] | null;
     windowZIndexes: Record<string, number>;
     bringToFront: (id: OpenWindow["id"]) => void;
+    minimizeWindow: (id: OpenWindow["id"]) => void;
 }
 
 type DesktopItems = {
@@ -27,7 +28,7 @@ const desktopItems = [
 
 
 
-export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, bringToFront }: DesktopProps) => {
+export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, bringToFront, minimizeWindow }: DesktopProps) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null)
 
     const handleOpenWindow = (item : DesktopItems) => {
@@ -73,6 +74,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
                     zIndex={windowZIndexes[item.id] ?? 1}
                     onFocus={() => bringToFront(item.id)}
                     inFocus={item.id === inFocus}
+                    onMinimize={() => minimizeWindow(item.id)}
                 />
             ))}
         </div>

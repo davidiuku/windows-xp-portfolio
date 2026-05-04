@@ -35,6 +35,10 @@ function App() {
         }
       })
      );
+     
+     if (inFocus === id) {
+            setInFocus(null)
+          }
   };
 
   const restoreWindow = (id: OpenWindow["id"]) => {
@@ -60,6 +64,7 @@ function App() {
       inFocus={inFocus}
       windowZIndexes={windowZIndexes}
       bringToFront={bringToFront}
+      minimizeWindow={minimizeWindow}
     />
     <Taskbar
       openWindows={openWindows}

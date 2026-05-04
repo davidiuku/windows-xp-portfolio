@@ -31,9 +31,10 @@ type Props = {
     zIndex: number;
     onFocus: () => void;
     inFocus: boolean;
+    onMinimize: () => void;
 };
 
-export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus }: Props) => {
+export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinimize }: Props) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null);
     const [ position, setPosition ] = useState({ x: 800, y: 300 });
 
@@ -41,6 +42,11 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus }: Props
         event.stopPropagation();
         onClose();
     };
+
+    const handleMinimize = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        onMinimize();
+    }
 
     const drives = [
         { id: "c", label: "Local Disk (C:)", icon: LocalDisk },
@@ -168,7 +174,10 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus }: Props
                         </div>
                         <span>{item.label}</span>
                         <div className={style.titleControls}>
-                            <button className={style.titleButton}>
+                            <button
+                                className={style.titleButton}
+                                onMouseDown={(event) => event.stopPropagation()}
+                                onClick={handleMinimize}>
                                 <img src={Minimize} alt="Minimize"/>
                             </button>
                             <button className={style.titleButton}>
