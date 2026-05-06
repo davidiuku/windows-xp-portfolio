@@ -3,6 +3,7 @@ export type OpenWindow = {
     label: string;
     icon: string;
     isMinimized: boolean;
+    isMaximized: boolean;
     position: {
         x: number,
         y: number
@@ -11,4 +12,4 @@ export type OpenWindow = {
         width: number,
         height: number
     };
-}
+};

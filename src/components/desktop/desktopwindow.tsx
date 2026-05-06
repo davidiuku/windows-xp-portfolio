@@ -18,6 +18,7 @@ import Desktop from "../../assets/Desktop.png";
 import MyComputer from "../../assets/mycomputer.png";
 import LocalDisk from "../../assets/LocalDisk.png";
 import CDRW from "../../assets/CDRW.png";
+import Restore from "../../assets/Restore.png";
 import { useEffect, useState, useRef } from "react";
 import { Resizable } from "re-resizable";
 import type { OpenWindow } from "../../types";
@@ -29,11 +30,12 @@ type Props = {
     onFocus: () => void;
     inFocus: boolean;
     onMinimize: () => void;
+    onToggleMaximize: () => void;
     updateWindowPosition: (id: OpenWindow["id"], position: OpenWindow["position"]) => void;
     updateWindowSize: (id: OpenWindow["id"], size: OpenWindow["size"]) => void;
 };
 
-export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinimize, updateWindowPosition, updateWindowSize }: Props) => {
+export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinimize, onToggleMaximize, updateWindowPosition, updateWindowSize }: Props) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null);
 
     const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,7 +46,12 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
     const handleMinimize = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         onMinimize();
-    }
+    };
+
+    const handleMaximizeToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        onToggleMaximize();
+    };
 
     const drives = [
         { id: "c", label: "Local Disk (C:)", icon: LocalDisk },
@@ -64,6 +71,8 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
         const windowElement = windowRef.current;
 
         const onMouseDown = (event:MouseEvent) => {
+            if (item.isMaximized) return;
+
             event.preventDefault();
 
             const rect = windowElement.getBoundingClientRect()
@@ -100,26 +109,33 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
             window.removeEventListener('mouseup', onMouseUp);
         }
         return cleanup;
-    }, [])
+    }, [item.isMaximized, updateWindowPosition])
 
     const resizeStartPosition = useRef({ x: 0, y: 0 });
+
+    const taskbarHeight = 30;
+
+    const displaySize = item.isMaximized
+        ? { width: innerWidth, height: innerHeight - taskbarHeight }
+        : item.size;
+
+    const displayPosition = item.isMaximized
+        ? { x: 0, y: 0 }
+        : item.position;
 
     return (
         <div
             ref={windowRef}
-            className={`${style.window} ${inFocus ? style.focused : style.unfocused}`}
-            style={{ left: `${item.position.x}px`, top: `${item.position.y}px`, zIndex: zIndex }}
+            className={`${style.window} ${inFocus ? style.focused : style.unfocused} ${item.isMaximized ? style.maximized : ""}`}
+            style={{ left: `${displayPosition.x}px`, top: `${displayPosition.y}px`, zIndex: zIndex }}
             onMouseDown={onFocus}
         >
             <Resizable
-                defaultSize={{
-                    width: item.size.width,
-                    height: item.size.height,
-                }}
+                size={displaySize}
                 minWidth={600}
                 minHeight={400}
                 onResizeStart={() => {
-                    if (!windowRef.current) return;
+                    if (!windowRef.current || item.isMaximized) return;
 
                     const rect = windowRef.current.getBoundingClientRect();
 
@@ -183,8 +199,14 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                                 onClick={handleMinimize}>
                                 <img src={Minimize} alt="Minimize"/>
                             </button>
-                            <button className={style.titleButton}>
-                                <img src={Maximize} alt="Maximize"/>
+                            <button
+                                className={style.titleButton}
+                                onClick={handleMaximizeToggle}
+                            >
+                                <img
+                                    src={item.isMaximized ? Restore : Maximize}
+                                    alt={item.isMaximized ? "Restore" : "Maximize"}
+                                />
                             </button>
                             <button className={style.titleButton} onClick={handleClose}>
                                 <img src={Exit} alt="Exit"/>

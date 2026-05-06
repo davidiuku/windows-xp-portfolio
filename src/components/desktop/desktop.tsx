@@ -1,6 +1,7 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 import MyComputer from "../../assets/mycomputer.png"
 import RecycleBinEmpty from "../../assets/recyclebinempty.png"
+import TextDocument from "../../assets/textDocument.png"
 import style from "./desktop.module.css"
 import { DesktopIcon } from "./desktopicon"
 import { DesktopWindow } from "./desktopwindow";
@@ -24,6 +25,7 @@ type DesktopItems = {
 const desktopItems = [
     { id: "my-computer", label: "My Computer", icon: MyComputer},
     { id: "recycle-bin", label: "Recycle Bin", icon: RecycleBinEmpty},
+    { id: "text-document", label: "David's Resume", icon: TextDocument}
 ];
 
 
@@ -31,67 +33,92 @@ const desktopItems = [
 export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, bringToFront, minimizeWindow }: DesktopProps) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null)
 
-    const getCenteredPosition = () => {
-        const DEFAULT_WINDOW_WIDTH = 600;
-        const DEFAULT_WINDOW_HEIGHT = 400;
+    const getStartingPosition = () => {
+        const DEFAULT_WINDOW_WIDTH = 650;
+        const DEFAULT_WINDOW_HEIGHT = 550;
         const TASKBAR_HEIGHT = 30;
 
-        const centeredX = (window.innerWidth - DEFAULT_WINDOW_WIDTH) / 2
-        const centeredY = (window.innerHeight - TASKBAR_HEIGHT - DEFAULT_WINDOW_HEIGHT) / 2
+        const centeredX = (window.innerWidth - DEFAULT_WINDOW_WIDTH) / 2;
+        const centeredY = (window.innerHeight - TASKBAR_HEIGHT - DEFAULT_WINDOW_HEIGHT) / 2;
 
-        return {
+        let startingPosition = {
             x: Math.max(0, centeredX),
             y: Math.max(0, centeredY)
+        };
+
+        while (
+            openWindows.some(openWindow =>
+                openWindow.position.x === startingPosition.x &&
+                openWindow.position.y === startingPosition.y
+            )
+        ) {
+            startingPosition = {
+                x: startingPosition.x + 30 ,
+                y: startingPosition.y + 30
+            };
         }
-    }
+
+        return startingPosition;
+    };
 
     const handleOpenWindow = (item : DesktopItems) => {
-        const alreadyOpen = openWindows.some(openWindow => openWindow.id === item.id)
+        const alreadyOpen = openWindows.some(openWindow => openWindow.id === item.id);
 
         if (!alreadyOpen) {
             const newWindow = {
                 ...item,
                 isMinimized: false,
-                position: getCenteredPosition(),
+                isMaximized: false,
+                position: getStartingPosition(),
                 size: {
                     width: 650,
                     height: 550,
                 }
             };
-
-            setOpenWindows(prev => [...prev, newWindow])
+            setOpenWindows(prev => [...prev, newWindow]);
         }
-
-        bringToFront(item.id)
-    }
+        bringToFront(item.id);
+    };
 
     const handleCloseWindow = (item : DesktopItems) => {
-        setOpenWindows(prev => prev.filter(window => window.id !== item.id))
-    }
+        setOpenWindows(prev => prev.filter(window => window.id !== item.id));
+    };
 
     const updateWindowPosition = (id: OpenWindow["id"], position: OpenWindow["position"]) => {
         setOpenWindows(prev => prev.map(openWindow => {
             if (openWindow.id === id) {
                 return {
                     ...openWindow,
-                    position: position
-                }
+                    position
+                };
             }
-            return openWindow
-        }))
-    }
+            return openWindow;
+        }));
+    };
 
     const updateWindowSize = (id: OpenWindow["id"], size: OpenWindow["size"]) => {
         setOpenWindows(prev => prev.map(openWindow => {
             if (openWindow.id === id) {
                 return {
                     ...openWindow,
-                    size: size
+                    size
                 };
-            };
-            return openWindow
-        }))
-    }
+            }
+            return openWindow;
+        }));
+    };
+
+    const toggleMaximizeWindow = (id: OpenWindow["id"]) => {
+        setOpenWindows(prev => prev.map(window => {
+            if (window.id === id) {
+                return {
+                    ...window,
+                    isMaximized: !window.isMaximized
+                };
+            }
+            return window;
+        }));
+    };
 
     return (
         <div
@@ -118,6 +145,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
                     onFocus={() => bringToFront(item.id)}
                     inFocus={item.id === inFocus}
                     onMinimize={() => minimizeWindow(item.id)}
+                    onToggleMaximize={() => toggleMaximizeWindow(item.id)}
                     updateWindowPosition={updateWindowPosition}
                     updateWindowSize={updateWindowSize}
                 />
