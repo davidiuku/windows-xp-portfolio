@@ -20,3 +20,5 @@ export { default as LocalDiskIcon } from "./local-disk.png";
 export { default as CdrwIcon } from "./cd-rewrite.png";
 export { default as TextDocumentIcon } from "./text-document.png";
 export { default as RecycleBinEmptyIcon } from "./recycle-bin-empty.png";
+export { default as VolumeIcon } from "./volume.png";
+export { default as SecurityIcon } from "./security.png";

@@ -1,9 +1,9 @@
 import { StartLogoIcon } from "../../assets";
-import style from "./taskbar.module.css"
+import style from "./start-button.module.css"
 
 export const StartButton = () => {
     return (
-        <button className={style.startbutton}>
+        <button className={style.startButton}>
             <img src={StartLogoIcon} width='20' alt='WindowsLogo' draggable='false' />
             start
         </button>

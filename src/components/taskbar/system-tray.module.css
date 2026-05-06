@@ -1,0 +1,24 @@
+.systemTray {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  gap: 3px;
+  background: linear-gradient(
+    #095bc9 1px,
+    #19b7f3 3px,
+    #1195eb 5px
+  );
+  box-shadow:
+    inset 2px 0 0 0 #0ab1f5, inset 0px -2px 2px rgba(0,0,0,0.4);
+}
+
+.trayIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  transform: translateY(1px);
+  filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.3));
+}

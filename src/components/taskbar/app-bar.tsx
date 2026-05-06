@@ -1,4 +1,4 @@
-import style from "./taskbar.module.css"
+import style from "./app-bar.module.css"
 import type { OpenWindow } from "../../types";
 import type { Dispatch, SetStateAction } from "react";
 

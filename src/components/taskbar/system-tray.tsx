@@ -1,13 +1,12 @@
 import { Clock } from '../clock/clock'
-import Volume from '../../assets/volume.png'
-import Security from '../../assets/security.png'
-import style from './taskbar.module.css'
+import { VolumeIcon, SecurityIcon } from "../../assets"
+import style from './system-tray.module.css'
 
 export const SystemTray = () => {
     return (
-        <div className={style.systemtray}>
-            <img src={Volume} className={style.tray_icon} alt='Volume' draggable='false' />
-            <img src={Security} className={style.tray_icon} alt='Security' draggable='false' />
+        <div className={style.systemTray}>
+            <img src={VolumeIcon} className={style.trayIcon} alt='Volume' draggable='false' />
+            <img src={SecurityIcon} className={style.trayIcon} alt='Security' draggable='false' />
             <Clock />
         </div>
     )
