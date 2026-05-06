@@ -1,24 +1,26 @@
+import {
+    MinimizeIcon,
+    MaximizeIcon,
+    ExitIcon,
+    BackIcon,
+    ForwardIcon,
+    SearchIcon,
+    UpIcon,
+    FolderViewIcon,
+    IconViewIcon,
+    StartLogoIcon,
+    GoIcon,
+    NewFolderIcon,
+    RenameIcon,
+    DeleteIcon,
+    MyDocumentsIcon,
+    DesktopAssetIcon,
+    MyComputerIcon,
+    LocalDiskIcon,
+    CdrwIcon,
+    RestoreIcon
+} from "../../assets"
 import style from "./desktopwindow..module.css";
-import Minimize from "../../assets/Minimize.png";
-import Maximize from "../../assets/Maximize.png";
-import Exit from "../../assets/Exit.png";
-import Back from "../../assets/Back.png";
-import Forward from "../../assets/Forward.png";
-import Search from "../../assets/Search.png";
-import Up from "../../assets/Up.png";
-import FolderView from "../../assets/FolderView.png";
-import IconView from "../../assets/IconView.png";
-import startlogo from "../../assets/startlogo.png";
-import Go from "../../assets/Go.png";
-import NewFolder from "../../assets/NewFolder.png";
-import Rename from "../../assets/Rename.png";
-import Delete from "../../assets/Delete.png";
-import MyDocuments from "../../assets/MyDocuments.png";
-import Desktop from "../../assets/Desktop.png";
-import MyComputer from "../../assets/mycomputer.png";
-import LocalDisk from "../../assets/LocalDisk.png";
-import CDRW from "../../assets/CDRW.png";
-import Restore from "../../assets/Restore.png";
 import { useEffect, useState, useRef } from "react";
 import { Resizable } from "re-resizable";
 import type { OpenWindow } from "../../types";
@@ -54,9 +56,9 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
     };
 
     const drives = [
-        { id: "c", label: "Local Disk (C:)", icon: LocalDisk },
-        { id: "d", label: "Local Disk (D:)", icon: LocalDisk },
-        { id: "e", label: "CD Drive (E:)", icon: CDRW }
+        { id: "c", label: "Local Disk (C:)", icon: LocalDiskIcon },
+        { id: "d", label: "Local Disk (D:)", icon: LocalDiskIcon },
+        { id: "e", label: "CD Drive (E:)", icon: CdrwIcon }
     ];
 
     const windowRef = useRef<HTMLDivElement>(null);
@@ -198,19 +200,19 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                                 className={style.titleButton}
                                 onMouseDown={(event) => event.stopPropagation()}
                                 onClick={handleMinimize}>
-                                <img src={Minimize} alt="Minimize"/>
+                                <img src={MinimizeIcon} alt="Minimize"/>
                             </button>
                             <button
                                 className={style.titleButton}
                                 onClick={handleMaximizeToggle}
                             >
                                 <img
-                                    src={item.isMaximized ? Restore : Maximize}
+                                    src={item.isMaximized ? RestoreIcon : MaximizeIcon}
                                     alt={item.isMaximized ? "Restore" : "Maximize"}
                                 />
                             </button>
                             <button className={style.titleButton} onClick={handleClose}>
-                                <img src={Exit} alt="Exit"/>
+                                <img src={ExitIcon} alt="Exit"/>
                             </button>
                         </div>
                     </div>
@@ -234,39 +236,39 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                             <button>
                                 Help
                             </button>
-                            <img src={startlogo} alt="Windows Logo" />
+                            <img src={StartLogoIcon} alt="Windows Logo" />
                         </div>
                         <div className={style.toolBar}>
                             <div className={style.group}>
                                 <button>
-                                    <img src={Back} alt="Back Button"/>
+                                    <img src={BackIcon} alt="Back Button"/>
                                     <span>Back</span>
                                     <span className={style.arrowDivider}></span>
                                     <span className={style.arrow}></span>
                                 </button>
                                 <button>
-                                    <img src={Forward} alt="Forward Button"/>
+                                    <img src={ForwardIcon} alt="Forward Button"/>
                                     <span className={style.arrowDivider}></span>
                                     <span className={style.arrow}></span>
                                 </button>
                                 <button>
-                                    <img src={Up} alt="Up Button"/>
+                                    <img src={UpIcon} alt="Up Button"/>
                                 </button>
                             </div>
                             <div className={style.groupDivider}></div>
                             <div className={style.group}>
                                 <button>
-                                    <img src={Search} />
+                                    <img src={SearchIcon} />
                                     <span>Search</span>
                                 </button>
                                 <button>
-                                    <img src={FolderView} alt="Folder View Button"/>
+                                    <img src={FolderViewIcon} alt="Folder View Button"/>
                                     <span>Folders</span>
                                 </button>
                             </div>
                             <div className={style.groupDivider}></div>
                             <button>
-                                <img src={IconView} alt="Icon View Button" />
+                                <img src={IconViewIcon} alt="Icon View Button" />
                                 <span className={style.arrowDivider}></span>
                                 <span className={style.arrow}></span>
                             </button>
@@ -278,7 +280,7 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                                 <span>{item.label}</span>
                             </div>
                             <div className={style.goArea}>
-                                <img src={Go} alt="Go Button" />
+                                <img src={GoIcon} alt="Go Button" />
                                 <span>Go</span>
                             </div>
                         </div>
@@ -293,15 +295,15 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                                     </div>
                                     <div className={style.panelBody}>
                                         <button className={style.panelItem}>
-                                            <img src={NewFolder} alt="Create New Folder" />
+                                            <img src={NewFolderIcon} alt="Create New Folder" />
                                             <span>Make a New folder</span>
                                         </button>
                                         <button className={style.panelItem}>
-                                            <img src={Rename} alt="Rename " />
+                                            <img src={RenameIcon} alt="Rename " />
                                             <span>Rename this selection</span>
                                         </button>
                                         <button className={style.panelItem}>
-                                            <img src={Delete} alt="Delete Selection" />
+                                            <img src={DeleteIcon} alt="Delete Selection" />
                                             <span>Delete this selection</span>
                                         </button>
                                     </div>
@@ -315,15 +317,15 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                                     </div>
                                     <div className={style.panelBody}>
                                         <button className={style.panelItem}>
-                                            <img src={Desktop} alt="Desktop" />
+                                            <img src={DesktopAssetIcon} alt="Desktop" />
                                             <span>Desktop</span>
                                         </button>
                                         <button className={style.panelItem}>
-                                            <img src={MyDocuments} alt="My Documents" />
+                                            <img src={MyDocumentsIcon} alt="My Documents" />
                                             <span>My Documents</span>
                                         </button>
                                         <button className={style.panelItem}>
-                                            <img src={MyComputer} alt="My Computer" />
+                                            <img src={MyComputerIcon} alt="My Computer" />
                                             <span>My Computer</span>
                                         </button>
                                     </div>

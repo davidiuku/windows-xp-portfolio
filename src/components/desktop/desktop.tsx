@@ -1,7 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import MyComputer from "../../assets/mycomputer.png"
-import RecycleBinEmpty from "../../assets/recyclebinempty.png"
-import TextDocument from "../../assets/textDocument.png"
+import { MyComputerIcon, RecycleBinEmptyIcon, TextDocumentIcon } from "../../assets";
 import style from "./desktop.module.css"
 import { DesktopIcon } from "./desktopicon"
 import { DesktopWindow } from "./desktopwindow";
@@ -23,9 +21,9 @@ type DesktopItems = {
 };
 
 const desktopItems = [
-    { id: "my-computer", label: "My Computer", icon: MyComputer},
-    { id: "recycle-bin", label: "Recycle Bin", icon: RecycleBinEmpty},
-    { id: "text-document", label: "David's Resume", icon: TextDocument}
+    { id: "my-computer", label: "My Computer", icon: MyComputerIcon},
+    { id: "recycle-bin", label: "Recycle Bin", icon: RecycleBinEmptyIcon},
+    { id: "text-document", label: "David's Resume", icon: TextDocumentIcon}
 ];
 
 
