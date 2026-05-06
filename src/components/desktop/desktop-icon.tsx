@@ -1,4 +1,4 @@
-import style from "./desktopicon.module.css"
+import style from "./desktop-icon.module.css"
 
 type Props = {
     item: {

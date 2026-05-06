@@ -20,7 +20,7 @@ import {
     CdrwIcon,
     RestoreIcon
 } from "../../assets"
-import style from "./desktopwindow..module.css";
+import style from "./desktop-window.module.css";
 import { useEffect, useState, useRef } from "react";
 import { Resizable } from "re-resizable";
 import type { OpenWindow } from "../../types";

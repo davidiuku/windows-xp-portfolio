@@ -1,8 +1,8 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { MyComputerIcon, RecycleBinEmptyIcon, TextDocumentIcon } from "../../assets";
 import style from "./desktop.module.css"
-import { DesktopIcon } from "./desktopicon"
-import { DesktopWindow } from "./desktopwindow";
+import { DesktopIcon } from "./desktop-icon"
+import { DesktopWindow } from "./desktop-window";
 import type { OpenWindow } from "../../types";
 
 type DesktopProps = {

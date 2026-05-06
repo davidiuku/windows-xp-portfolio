@@ -1,4 +1,4 @@
-import { useLiveDate } from '../../hooks/useLiveDate'
+import { useLiveDate } from '../../hooks/use-live-date'
 import styles from './Clock.module.css';
 
 export const Clock = () => {
