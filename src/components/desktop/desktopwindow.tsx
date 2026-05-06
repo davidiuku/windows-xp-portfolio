@@ -134,6 +134,7 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                 size={displaySize}
                 minWidth={600}
                 minHeight={400}
+                enable={item.isMaximized ? false : undefined}
                 onResizeStart={() => {
                     if (!windowRef.current || item.isMaximized) return;
 
