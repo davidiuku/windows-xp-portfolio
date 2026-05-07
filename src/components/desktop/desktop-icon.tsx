@@ -1,4 +1,4 @@
-import style from "./desktop-icon.module.css"
+import style from "./desktop-icon.module.css";
 
 type Props = {
     item: {
@@ -15,12 +15,11 @@ export const DesktopIcon = ({ item, isSelected, onClick, onDoubleClick }: Props)
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
         onClick();
-    }
+    };
 
     const handleDoubleClick = () => {
         onDoubleClick();
     };
-
 
     return (
         <div className={style.icon} onClick={handleClick} onDoubleClick={handleDoubleClick}>

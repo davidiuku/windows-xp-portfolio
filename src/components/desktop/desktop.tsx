@@ -1,7 +1,7 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { MyComputerIcon, RecycleBinEmptyIcon, TextDocumentIcon } from "../../assets";
-import style from "./desktop.module.css"
-import { DesktopIcon } from "./desktop-icon"
+import style from "./desktop.module.css";
+import { DesktopIcon } from "./desktop-icon";
 import { DesktopWindow } from "./desktop-window";
 import type { OpenWindow } from "../../types";
 
@@ -12,7 +12,7 @@ type DesktopProps = {
     windowZIndexes: Record<string, number>;
     bringToFront: (id: OpenWindow["id"]) => void;
     minimizeWindow: (id: OpenWindow["id"]) => void;
-}
+};
 
 type DesktopItems = {
     id: string;
@@ -29,7 +29,7 @@ const desktopItems = [
 
 
 export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, bringToFront, minimizeWindow }: DesktopProps) => {
-    const [ selectedId, setSelectedId ] = useState<string | null>(null)
+    const [ selectedId, setSelectedId ] = useState<string | null>(null);
 
     const getStartingPosition = () => {
         const DEFAULT_WINDOW_WIDTH = 650;
@@ -122,7 +122,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
         <div
             className={style.desktop}
             onClick={() => {
-                setSelectedId(null)
+                setSelectedId(null);
             }}
         >
             {desktopItems.map(item => (

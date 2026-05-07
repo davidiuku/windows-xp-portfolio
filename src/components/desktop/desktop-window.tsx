@@ -1,29 +1,12 @@
-import {
-    MinimizeIcon,
-    MaximizeIcon,
-    ExitIcon,
-    BackIcon,
-    ForwardIcon,
-    SearchIcon,
-    UpIcon,
-    FolderViewIcon,
-    IconViewIcon,
-    StartLogoIcon,
-    GoIcon,
-    NewFolderIcon,
-    RenameIcon,
-    DeleteIcon,
-    MyDocumentsIcon,
-    DesktopAssetIcon,
-    MyComputerIcon,
-    LocalDiskIcon,
-    CdrwIcon,
-    RestoreIcon
-} from "../../assets"
 import style from "./desktop-window.module.css";
+import { LocalDiskIcon, CdrwIcon } from "../../assets";
 import { useEffect, useState, useRef } from "react";
 import { Resizable } from "re-resizable";
 import type { OpenWindow } from "../../types";
+import { ExplorerMainPane } from "./explorer-main-pane";
+import { ExplorerSideBar } from "./explorer-side-bar";
+import { ExplorerHeader } from "./explorer-header";
+import { WindowTitleBar } from "./window-title-bar";
 
 type Props = {
     item: OpenWindow;
@@ -37,29 +20,14 @@ type Props = {
     updateWindowSize: (id: OpenWindow["id"], size: OpenWindow["size"]) => void;
 };
 
+const drives = [
+    { id: "c", label: "Local Disk (C:)", icon: LocalDiskIcon },
+    { id: "d", label: "Local Disk (D:)", icon: LocalDiskIcon },
+    { id: "e", label: "CD Drive (E:)", icon: CdrwIcon }
+];
+
 export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinimize, onToggleMaximize, updateWindowPosition, updateWindowSize }: Props) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null);
-
-    const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        onClose();
-    };
-
-    const handleMinimize = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        onMinimize();
-    };
-
-    const handleMaximizeToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        onToggleMaximize();
-    };
-
-    const drives = [
-        { id: "c", label: "Local Disk (C:)", icon: LocalDiskIcon },
-        { id: "d", label: "Local Disk (D:)", icon: LocalDiskIcon },
-        { id: "e", label: "CD Drive (E:)", icon: CdrwIcon }
-    ];
 
     const windowRef = useRef<HTMLDivElement>(null);
     const titleBarRef = useRef<HTMLDivElement>(null);
@@ -75,9 +43,10 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
         const onMouseDown = (event:MouseEvent) => {
             if (item.isMaximized) return;
 
+            event.stopPropagation();
             event.preventDefault();
 
-            const rect = windowElement.getBoundingClientRect()
+            const rect = windowElement.getBoundingClientRect();
             if (!rect) return;
 
             isDragging.current = true;
@@ -98,20 +67,20 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
 
         const onMouseUp = () => {
             isDragging.current = false;
-        }
+        };
 
         titleBar.addEventListener('mousedown', onMouseDown);
-        window.addEventListener('mousemove', onMouseMove)
+        window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseup', onMouseUp);
 
 
         const cleanup = () => {
             titleBar.removeEventListener('mousedown', onMouseDown);
-            window.removeEventListener('mousemove', onMouseMove)
+            window.removeEventListener('mousemove', onMouseMove);
             window.removeEventListener('mouseup', onMouseUp);
-        }
+        };
         return cleanup;
-    }, [item.isMaximized, updateWindowPosition])
+    }, [item.id, item.isMaximized, updateWindowPosition]);
 
     const resizeStartPosition = useRef({ x: 0, y: 0 });
 
@@ -128,7 +97,11 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
     return (
         <div
             ref={windowRef}
-            className={`${style.window} ${inFocus ? style.focused : style.unfocused} ${item.isMaximized ? style.maximized : ""}`}
+            className={`
+                ${style.window}
+                ${inFocus ? style.focused : style.unfocused}
+                ${item.isMaximized ? style.maximized : ""}
+            `}
             style={{ left: `${displayPosition.x}px`, top: `${displayPosition.y}px`, zIndex: zIndex }}
             onMouseDown={onFocus}
         >
@@ -156,11 +129,11 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                     if (windowRef.current) {
                         if (isLeft) {
                             windowRef.current.style.left =
-                                `${resizeStartPosition.current.x - delta.width}px`
+                                `${resizeStartPosition.current.x - delta.width}px`;
                         }
                         if (isTop) {
                             windowRef.current.style.top =
-                                `${resizeStartPosition.current.y - delta.height}px`
+                                `${resizeStartPosition.current.y - delta.height}px`;
                         }
                     }
                 }}
@@ -187,182 +160,31 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                 }}
             >
                 <div className={style.windowInner}>
-                    <div
-                        ref={titleBarRef}
-                        className={style.titleBar}
-                    >
-                        <div>
-                            <img src={item.icon} alt={item.label} />
-                        </div>
-                        <span>{item.label}</span>
-                        <div className={style.titleControls}>
-                            <button
-                                className={style.titleButton}
-                                onMouseDown={(event) => event.stopPropagation()}
-                                onClick={handleMinimize}>
-                                <img src={MinimizeIcon} alt="Minimize"/>
-                            </button>
-                            <button
-                                className={style.titleButton}
-                                onClick={handleMaximizeToggle}
-                            >
-                                <img
-                                    src={item.isMaximized ? RestoreIcon : MaximizeIcon}
-                                    alt={item.isMaximized ? "Restore" : "Maximize"}
-                                />
-                            </button>
-                            <button className={style.titleButton} onClick={handleClose}>
-                                <img src={ExitIcon} alt="Exit"/>
-                            </button>
-                        </div>
-                    </div>
+                    <WindowTitleBar
+                        titleBarRef={titleBarRef}
+                        inFocus={inFocus}
+                        icon={item.icon}
+                        label={item.label}
+                        isMaximized={item.isMaximized}
+                        onClose={onClose}
+                        onMinimize={onMinimize}
+                        onToggleMaximize={onToggleMaximize}
+                    />
                     <div className={style.windowBody}>
-                        <div className={style.menuBar}>
-                            <button>
-                                File
-                            </button>
-                            <button>
-                                Edit
-                            </button>
-                            <button>
-                                View
-                            </button>
-                            <button>
-                                Favorites
-                            </button>
-                            <button>
-                                Tools
-                            </button>
-                            <button>
-                                Help
-                            </button>
-                            <img src={StartLogoIcon} alt="Windows Logo" />
-                        </div>
-                        <div className={style.toolBar}>
-                            <div className={style.group}>
-                                <button>
-                                    <img src={BackIcon} alt="Back Button"/>
-                                    <span>Back</span>
-                                    <span className={style.arrowDivider}></span>
-                                    <span className={style.arrow}></span>
-                                </button>
-                                <button>
-                                    <img src={ForwardIcon} alt="Forward Button"/>
-                                    <span className={style.arrowDivider}></span>
-                                    <span className={style.arrow}></span>
-                                </button>
-                                <button>
-                                    <img src={UpIcon} alt="Up Button"/>
-                                </button>
-                            </div>
-                            <div className={style.groupDivider}></div>
-                            <div className={style.group}>
-                                <button>
-                                    <img src={SearchIcon} />
-                                    <span>Search</span>
-                                </button>
-                                <button>
-                                    <img src={FolderViewIcon} alt="Folder View Button"/>
-                                    <span>Folders</span>
-                                </button>
-                            </div>
-                            <div className={style.groupDivider}></div>
-                            <button>
-                                <img src={IconViewIcon} alt="Icon View Button" />
-                                <span className={style.arrowDivider}></span>
-                                <span className={style.arrow}></span>
-                            </button>
-                        </div>
-                        <div className={style.addressBar}>
-                            <span>Address</span>
-                            <div className={style.pathField}>
-                                <img src={item.icon} alt="File Icon" />
-                                <span>{item.label}</span>
-                            </div>
-                            <div className={style.goArea}>
-                                <img src={GoIcon} alt="Go Button" />
-                                <span>Go</span>
-                            </div>
-                        </div>
+                        <ExplorerHeader
+                            icon={item.icon}
+                            label={item.label}
+                        />
                         <div className={style.contentArea}>
-                            <div className={style.sideBar}>
-                                <div className={style.panel}>
-                                    <div className={style.panelHeader}>
-                                        <span>File and Folder Tasks</span>
-                                        <button className={style.panelToggle} aria-label="Collapse section">
-                                            <span className={style.panelToggleArrow}></span>
-                                        </button>
-                                    </div>
-                                    <div className={style.panelBody}>
-                                        <button className={style.panelItem}>
-                                            <img src={NewFolderIcon} alt="Create New Folder" />
-                                            <span>Make a New folder</span>
-                                        </button>
-                                        <button className={style.panelItem}>
-                                            <img src={RenameIcon} alt="Rename " />
-                                            <span>Rename this selection</span>
-                                        </button>
-                                        <button className={style.panelItem}>
-                                            <img src={DeleteIcon} alt="Delete Selection" />
-                                            <span>Delete this selection</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className={style.panel}>
-                                    <div className={style.panelHeader}>
-                                        <span>Other Places</span>
-                                        <button className={style.panelToggle} aria-label="Collapse section">
-                                            <span className={style.panelToggleArrow}></span>
-                                        </button>
-                                    </div>
-                                    <div className={style.panelBody}>
-                                        <button className={style.panelItem}>
-                                            <img src={DesktopAssetIcon} alt="Desktop" />
-                                            <span>Desktop</span>
-                                        </button>
-                                        <button className={style.panelItem}>
-                                            <img src={MyDocumentsIcon} alt="My Documents" />
-                                            <span>My Documents</span>
-                                        </button>
-                                        <button className={style.panelItem}>
-                                            <img src={MyComputerIcon} alt="My Computer" />
-                                            <span>My Computer</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className={style.panel}>
-                                    <div className={style.panelHeader}>
-                                        <span>Details</span>
-                                        <button className={style.panelToggle} aria-label="Collapse section">
-                                            <span className={style.panelToggleArrow}></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={style.mainPane} onClick={()=> {setSelectedId(null)}}>
-                                {drives.map(drive => (
-                                    <button
-                                        key={drive.id}
-                                        className={style.driveButton}
-                                        onClick={(event)=> {
-                                            event.stopPropagation()
-                                            setSelectedId(drive.id)
-                                        }}
-                                    >
-                                        <span
-                                            className={`${style.iconImage} ${selectedId === drive.id ? style.iconImageSelected : ""}`}
-                                            style={{ "--icon-url": `url(${drive.icon})` } as React.CSSProperties}
-                                        >
-                                            <img src={drive.icon} alt={drive.label} />
-                                        </span>
-                                        <span className={`${selectedId === drive.id ? style.driveLabelSelected : ""}`}>{drive.label}</span>
-                                    </button>
-                                ))}
-                            </div>
+                            <ExplorerSideBar />
+                            <ExplorerMainPane
+                                drives={drives}
+                                selectedId={selectedId}
+                                setSelectedId={setSelectedId}
+                            />
                         </div>
                     </div>
                 </div>
-
             </Resizable>
         </div>
     );
