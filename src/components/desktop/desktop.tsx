@@ -14,22 +14,124 @@ type DesktopProps = {
     minimizeWindow: (id: OpenWindow["id"]) => void;
 };
 
-type DesktopItems = {
+type DesktopItem = {
     id: string;
     label: string;
     icon: string;
+    position: {
+        x: number;
+        y: number;
+    }
 };
 
-const desktopItems = [
-    { id: "my-computer", label: "My Computer", icon: MyComputerIcon},
-    { id: "recycle-bin", label: "Recycle Bin", icon: RecycleBinEmptyIcon},
-    { id: "text-document", label: "David's Resume", icon: TextDocumentIcon}
+const initialDesktopItems: DesktopItem[] = [
+    {
+        id: "my-computer",
+        label: "My Computer",
+        icon: MyComputerIcon,
+        position: { x: 8, y: 10 },
+    },
+    {
+        id: "recycle-bin",
+        label: "Recycle Bin",
+        icon: RecycleBinEmptyIcon,
+        position: { x: 8, y: 88 },
+    },
+    {
+        id: "text-document",
+        label: "David's Resume",
+        icon: TextDocumentIcon,
+        position: { x: 8, y: 166 },
+    }
 ];
 
+const GRID_START_X = 8;
+const GRID_START_Y = 10;
 
+const GRID_CELL_WIDTH = 82;
+const GRID_CELL_HEIGHT = 78;
 
 export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, bringToFront, minimizeWindow }: DesktopProps) => {
     const [ selectedId, setSelectedId ] = useState<string | null>(null);
+    const [ desktopItems, setDesktopItems ] = useState<DesktopItem[]>(initialDesktopItems);
+    const [ draggingIcon, setDraggingIcon ] = useState<null | {
+        id: string;
+        startMouseX: number;
+        startMouseY: number;
+        startIconX: number;
+        startIconY: number;
+    }>(null);
+
+    const snapToGrid = ( x: number, y: number ) => {
+        const snappedX = Math.round((x - GRID_START_X) / GRID_CELL_WIDTH) * GRID_CELL_WIDTH + GRID_START_X;
+        const snappedY = Math.round((y - GRID_START_Y) / GRID_CELL_HEIGHT) * GRID_CELL_HEIGHT + GRID_START_Y;
+
+        return {
+            x: Math.max(GRID_START_X, snappedX),
+            y: Math.max(GRID_START_Y, snappedY),
+        };
+    };
+
+    const handleIconMouseDown = (
+        event: React.MouseEvent<HTMLDivElement>,
+        item: DesktopItem
+    ) => {
+        event.stopPropagation();
+
+        setSelectedId(item.id);
+
+        setDraggingIcon({
+            id: item.id,
+            startMouseX: event.clientX,
+            startMouseY: event.clientY,
+            startIconX: item.position.x,
+            startIconY: item.position.y,
+        })
+    }
+
+    const handleMouseMove = (event:React.MouseEvent<HTMLDivElement>) => {
+        if (!draggingIcon) return;
+
+        const deltaX = event.clientX - draggingIcon.startMouseX;
+        const deltaY = event.clientY - draggingIcon.startMouseY;
+
+        setDesktopItems(prev =>
+            prev.map(icon => {
+                if (icon.id !== draggingIcon.id) return icon;
+
+                return {
+                    ...icon,
+                    position: {
+                        x: draggingIcon.startIconX + deltaX,
+                        y: draggingIcon.startIconY + deltaY,
+                    },
+                };
+            })
+        );
+    };
+
+    const handleMouseUp = () => {
+        if (!draggingIcon) return;
+
+        setDesktopItems(prev =>
+            prev.map(icon => {
+                if (icon.id !== draggingIcon.id) return icon;
+
+                const snappedPosition = snapToGrid( icon.position.x, icon.position.y )
+                const positionTaken = prev.some(otherIcon =>
+                    otherIcon.position.x === snappedPosition.x &&
+                    otherIcon.position.y === snappedPosition.y
+                );
+
+                return {
+                    ...icon,
+                    position: positionTaken ? { x: draggingIcon.startIconX, y: draggingIcon.startIconY} : snappedPosition
+                };
+            })
+        );
+
+        setDraggingIcon(null);
+    };
 
     const getStartingPosition = () => {
         const DEFAULT_WINDOW_WIDTH = 650;
@@ -59,7 +161,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
         return startingPosition;
     };
 
-    const handleOpenWindow = (item : DesktopItems) => {
+    const handleOpenWindow = (item : DesktopItem) => {
         const alreadyOpen = openWindows.some(openWindow => openWindow.id === item.id);
 
         if (!alreadyOpen) {
@@ -78,7 +180,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
         bringToFront(item.id);
     };
 
-    const handleCloseWindow = (item : DesktopItems) => {
+    const handleCloseWindow = (item : DesktopItem) => {
         setOpenWindows(prev => prev.filter(window => window.id !== item.id));
     };
 
@@ -121,6 +223,8 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
     return (
         <div
             className={style.desktop}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
             onClick={() => {
                 setSelectedId(null);
             }}
@@ -131,6 +235,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
                     item={item}
                     isSelected={selectedId === item.id}
                     onClick={() => setSelectedId(item.id)}
+                    onMouseDown={(event) => handleIconMouseDown(event, item)}
                     onDoubleClick={() => handleOpenWindow(item)}
                 />
             ))}
