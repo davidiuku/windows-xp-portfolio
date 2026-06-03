@@ -4,6 +4,7 @@ import style from "./desktop.module.css";
 import { DesktopIcon } from "./desktop-icon";
 import { DesktopWindow } from "./desktop-window";
 import type { OpenWindow } from "../../types";
+import { resumeText } from "../../assets/data/resumeText";
 
 type DesktopProps = {
     openWindows: OpenWindow[];
@@ -22,6 +23,8 @@ type DesktopItem = {
         x: number;
         y: number;
     }
+    type: "folder" | "text" | "image" | "link";
+    content?: string;
 };
 
 const initialDesktopItems: DesktopItem[] = [
@@ -30,18 +33,22 @@ const initialDesktopItems: DesktopItem[] = [
         label: "My Computer",
         icon: MyComputerIcon,
         position: { x: 8, y: 10 },
+        type: "folder",
     },
     {
         id: "recycle-bin",
         label: "Recycle Bin",
         icon: RecycleBinEmptyIcon,
         position: { x: 8, y: 88 },
+        type: "folder",
     },
     {
         id: "text-document",
         label: "David's Resume",
         icon: TextDocumentIcon,
         position: { x: 8, y: 166 },
+        type: "text",
+        content: resumeText
     }
 ];
 

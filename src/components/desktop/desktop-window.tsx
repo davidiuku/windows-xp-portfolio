@@ -7,6 +7,7 @@ import { ExplorerMainPane } from "./explorer-main-pane";
 import { ExplorerSideBar } from "./explorer-side-bar";
 import { ExplorerHeader } from "./explorer-header";
 import { WindowTitleBar } from "./window-title-bar";
+import { NotepadWindowContent } from "./notepad-window-content";
 
 type Props = {
     item: OpenWindow;
@@ -94,6 +95,33 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
         ? { x: 0, y: 0 }
         : item.position;
 
+    const renderWindowContent = () => {
+        if (item.type === "folder") {
+            return (
+                <>
+                    <ExplorerHeader
+                            icon={item.icon}
+                            label={item.label}
+                        />
+                        <div className={style.contentArea}>
+                            <ExplorerSideBar />
+                            <ExplorerMainPane
+                                drives={drives}
+                                selectedId={selectedId}
+                                setSelectedId={setSelectedId}
+                            />
+                        </div>
+                </>
+            );
+        }
+
+        if (item.type === "text") {
+            return (
+                <NotepadWindowContent content={item.content ?? ""} />
+            );
+        }
+    };
+
     return (
         <div
             ref={windowRef}
@@ -171,18 +199,7 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                         onToggleMaximize={onToggleMaximize}
                     />
                     <div className={style.windowBody}>
-                        <ExplorerHeader
-                            icon={item.icon}
-                            label={item.label}
-                        />
-                        <div className={style.contentArea}>
-                            <ExplorerSideBar />
-                            <ExplorerMainPane
-                                drives={drives}
-                                selectedId={selectedId}
-                                setSelectedId={setSelectedId}
-                            />
-                        </div>
+                        {renderWindowContent()}
                     </div>
                 </div>
             </Resizable>

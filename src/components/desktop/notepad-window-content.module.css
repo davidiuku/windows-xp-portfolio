@@ -1,0 +1,45 @@
+.notepadContent {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.menuBar {
+    background-color: #f0eee0;
+    border-bottom: 1px solid #d8d2bd;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+}
+
+.menuBar button {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 4px 8px 4px 8px;
+    font-size: 11px;
+}
+
+.menuBar button:hover {
+    background: #316ac5;
+    color: white;
+}
+
+.mainPane {
+    flex: 1;
+    min-height: 0;
+    background-color: #ffffff;
+    overflow: auto;
+}
+
+.documentText {
+    margin: 0;
+    padding: 4px 6px;
+    font-family: "Lucida Console", Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.35;
+    color: black;
+    white-space: pre-wrap;
+    word-break: break-word;
+}

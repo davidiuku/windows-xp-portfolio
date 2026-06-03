@@ -12,24 +12,12 @@ export function ExplorerHeader({ icon, label }:ExplorerHeaderProps) {
     return (
         <div>
             <div className={style.menuBar}>
-                <button>
-                    File
-                </button>
-                <button>
-                    Edit
-                </button>
-                <button>
-                    View
-                </button>
-                <button>
-                    Favorites
-                </button>
-                <button>
-                    Tools
-                </button>
-                <button>
-                    Help
-                </button>
+                <button>File</button>
+                <button>Edit</button>
+                <button>View</button>
+                <button>Favorites</button>
+                <button>Tools</button>
+                <button>Help</button>
                 <img src={StartLogoIcon} alt="Windows Logo" />
             </div>
             <div className={style.toolBar}>

@@ -12,4 +12,6 @@ export type OpenWindow = {
         width: number,
         height: number
     };
+    type: "folder" | "text" | "image" | "link",
+    content?: string;
 };
