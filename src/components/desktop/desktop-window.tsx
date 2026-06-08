@@ -1,13 +1,10 @@
 import style from "./desktop-window.module.css";
-import { LocalDiskIcon, CdrwIcon } from "../../assets";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Resizable } from "re-resizable";
 import type { OpenWindow } from "../../types";
-import { ExplorerMainPane } from "./explorer-main-pane";
-import { ExplorerSideBar } from "./explorer-side-bar";
-import { ExplorerHeader } from "./explorer-header";
 import { WindowTitleBar } from "./window-title-bar";
 import { NotepadWindowContent } from "./notepad-window-content";
+import { ExplorerWindowContent } from "./explorer-window-content";
 
 type Props = {
     item: OpenWindow;
@@ -21,15 +18,7 @@ type Props = {
     updateWindowSize: (id: OpenWindow["id"], size: OpenWindow["size"]) => void;
 };
 
-const drives = [
-    { id: "c", label: "Local Disk (C:)", icon: LocalDiskIcon },
-    { id: "d", label: "Local Disk (D:)", icon: LocalDiskIcon },
-    { id: "e", label: "CD Drive (E:)", icon: CdrwIcon }
-];
-
 export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinimize, onToggleMaximize, updateWindowPosition, updateWindowSize }: Props) => {
-    const [ selectedId, setSelectedId ] = useState<string | null>(null);
-
     const windowRef = useRef<HTMLDivElement>(null);
     const titleBarRef = useRef<HTMLDivElement>(null);
     const isDragging = useRef(false);
@@ -98,20 +87,7 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
     const renderWindowContent = () => {
         if (item.type === "folder") {
             return (
-                <>
-                    <ExplorerHeader
-                            icon={item.icon}
-                            label={item.label}
-                        />
-                        <div className={style.contentArea}>
-                            <ExplorerSideBar />
-                            <ExplorerMainPane
-                                drives={drives}
-                                selectedId={selectedId}
-                                setSelectedId={setSelectedId}
-                            />
-                        </div>
-                </>
+                <ExplorerWindowContent item={item} />
             );
         }
 
@@ -120,6 +96,8 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
                 <NotepadWindowContent content={item.content ?? ""} />
             );
         }
+
+        return null;
     };
 
     return (

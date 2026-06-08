@@ -22,3 +22,4 @@ export { default as TextDocumentIcon } from "./text-document.png";
 export { default as RecycleBinEmptyIcon } from "./recycle-bin-empty.png";
 export { default as VolumeIcon } from "./volume.png";
 export { default as SecurityIcon } from "./security.png";
+export { default as Pdf } from "./pdf.png"

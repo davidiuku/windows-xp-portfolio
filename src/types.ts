@@ -1,3 +1,5 @@
+export type FileType = "folder" | "text" | "image" | "link" | "download";
+
 export type OpenWindow = {
     id: string;
     label: string;

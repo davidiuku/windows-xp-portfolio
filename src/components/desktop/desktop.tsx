@@ -1,10 +1,11 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import { MyComputerIcon, RecycleBinEmptyIcon, TextDocumentIcon } from "../../assets";
+import { MyComputerIcon, Pdf, RecycleBinEmptyIcon, TextDocumentIcon } from "../../assets";
 import style from "./desktop.module.css";
 import { DesktopIcon } from "./desktop-icon";
 import { DesktopWindow } from "./desktop-window";
-import type { OpenWindow } from "../../types";
+import type { FileType, OpenWindow } from "../../types";
 import { resumeText } from "../../assets/data/resumeText";
+import resumePdf from "../../assets/David-Iukuridze-Resume.pdf"
 
 type DesktopProps = {
     openWindows: OpenWindow[];
@@ -23,8 +24,10 @@ type DesktopItem = {
         x: number;
         y: number;
     }
-    type: "folder" | "text" | "image" | "link";
+    type: FileType;
     content?: string;
+    href?: string;
+    downloadName?: string;
 };
 
 const initialDesktopItems: DesktopItem[] = [
@@ -44,11 +47,20 @@ const initialDesktopItems: DesktopItem[] = [
     },
     {
         id: "text-document",
-        label: "David's Resume",
+        label: "David's Resume.txt",
         icon: TextDocumentIcon,
         position: { x: 8, y: 166 },
         type: "text",
         content: resumeText
+    },
+    {
+        id: "pdf",
+        label: "David's Resume.pdf",
+        icon: Pdf,
+        position: { x: 8, y: 244 },
+        type: "download",
+        href: resumePdf,
+        downloadName: "David-Iukuridze-Resume.pdf",
     }
 ];
 
@@ -169,11 +181,30 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
     };
 
     const handleOpenWindow = (item : DesktopItem) => {
+        if (item.type === "download") {
+            if (!item.href) return;
+
+            const link = document.createElement("a");
+
+            link.href = item.href;
+            link.download = item.downloadName ?? item.label;
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            return;
+        }
+
         const alreadyOpen = openWindows.some(openWindow => openWindow.id === item.id);
 
         if (!alreadyOpen) {
-            const newWindow = {
-                ...item,
+            const newWindow: OpenWindow = {
+                id: item.id,
+                label: item.label,
+                icon: item.icon,
+                type: item.type as OpenWindow["type"],
+                content: item.content,
                 isMinimized: false,
                 isMaximized: false,
                 position: getStartingPosition(),
