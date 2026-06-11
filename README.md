@@ -4,6 +4,10 @@ An interactive Windows XP-inspired developer portfolio built with React, TypeScr
 
 <img src="src/assets/windows-xp-screenshot.jpg" alt="Windows XP Portfolio screenshot" width="800" />
 
+## Live Site
+
+[View the portfolio](https://davidiuku.github.io/windows-xp-portfolio/)
+
 ## Project Description
 
 This project recreates a Windows XP-style desktop experience in the browser. It is designed as a developer portfolio where users can explore resume content, project folders, links, images, and downloadable files through a familiar desktop-style interface.

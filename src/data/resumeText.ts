@@ -15,7 +15,8 @@ Front-End             | DOM manipulation, WebSockets, React, Vite
 RELEVANT PROJECTS
 
 Windows XP Portfolio | Front-End Engineer | Jun '26
-Live Site | GitHub: https://github.com/davidiuku/windows-xp-portfolio
+Live: https://davidiuku.github.io/windows-xp-portfolio/
+Code: https://github.com/davidiuku/windows-xp-portfolio
 React, TypeScript, Vite, CSS Modules
 
 An interactive Windows XP inspired developer portfolio that recreates a desktop

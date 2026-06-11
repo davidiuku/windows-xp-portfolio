@@ -4,6 +4,11 @@ An interactive Windows XP-inspired developer portfolio built with React,
 TypeScript, Vite, and CSS Modules.
 
 
+LIVE SITE
+
+https://davidiuku.github.io/windows-xp-portfolio/
+
+
 PROJECT DESCRIPTION
 
 This project recreates a Windows XP-style desktop experience in the browser.
