@@ -1,9 +1,10 @@
 import type { FileSystemItem } from "../types";
-import { LocalDiskIcon, CdrwIcon, Folder, URL, JPG, Roamio001, Roamio004, Roamio003, Roamio002 } from "../assets";
+import { LocalDiskIcon, CdrwIcon, Folder, URL, JPG, Roamio001, Roamio004, Roamio003, Roamio002, WindowsScreenshot } from "../assets";
 import { resumeText } from "../data/resumeText";
 import resumePdf from "../assets/David-Iukuridze-Resume.pdf"
 import { MyComputerIcon, Pdf, RecycleBinEmptyIcon, TextDocumentIcon } from "../assets";
 import { roamioReadmeText } from "./roamioReadmeText";
+import { windowsXpReadmeText } from "./windowsXpReadmeText";
 
 
 export type DesktopItem = FileSystemItem & {
@@ -99,7 +100,7 @@ export const initialDesktopItems: DesktopItem[] = [
                 type: "image",
                 src: Roamio004,
             },
-        ]
+        ],
     },
     {
         id: "windows-xp-portfolio",
@@ -113,6 +114,7 @@ export const initialDesktopItems: DesktopItem[] = [
                 label: "README.txt",
                 icon: TextDocumentIcon,
                 type: "text",
+                content: windowsXpReadmeText
             },
             {
                 id: "windows-xp-github",
@@ -121,6 +123,13 @@ export const initialDesktopItems: DesktopItem[] = [
                 type: "link",
                 href: "https://github.com/davidiuku/windows-xp-portfolio",
             },
-        ]
+            {
+                id: "windows-xp-screenshot",
+                label: "Screenshot.jpg",
+                icon: JPG,
+                type: "image",
+                src: WindowsScreenshot,
+            },
+        ],
     },
 ];

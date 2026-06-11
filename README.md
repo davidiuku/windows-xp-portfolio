@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# Windows XP Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive Windows XP-inspired developer portfolio built with React, TypeScript, Vite, and CSS Modules.
 
-Currently, two official plugins are available:
+<img src="src/assets/windows-xp-screenshot.jpg" alt="Windows XP Portfolio screenshot" width="800" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Project Description
 
-## React Compiler
+This project recreates a Windows XP-style desktop experience in the browser. It is designed as a developer portfolio where users can explore resume content, project folders, links, images, and downloadable files through a familiar desktop-style interface.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The project focuses on recreating core desktop interactions, including draggable icons, selectable items, openable windows, taskbar behavior, File Explorer-style folders, and Notepad-style text files.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Windows XP-inspired desktop UI
+- Draggable desktop icons with grid snapping
+- Selectable icons with XP-style highlight states
+- Openable, draggable, resizable windows
+- Window focus and z-index management
+- Minimize, restore, and maximize behavior
+- Taskbar with active window buttons and live system clock
+- File Explorer-style folder windows
+- Notepad-style text document windows
+- Resume text file and downloadable PDF resume
+- Project folders with README files, links, and images
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- React
+- TypeScript
+- Vite
+- CSS Modules
+- re-resizable for window resizing behavior
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Current Project Folders
+
+- Roamio
+- Windows XP Portfolio
+
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/davidiuku/windows-xp-portfolio.git
+cd windows-xp-portfolio
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Build the project:
+
+```bash
+npm run build
+```
+
+## Future Improvements
+
+- Image viewer polish to match authentic Windows Picture and Fax Viewer
+- More complete File Explorer navigation
+- Start menu functionality
+- Additional project folders
+- Improved responsive behavior for smaller screens
+- Playable Minesweeper game
