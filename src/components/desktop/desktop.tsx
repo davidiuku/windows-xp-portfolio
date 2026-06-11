@@ -1,11 +1,11 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import { MyComputerIcon, Pdf, RecycleBinEmptyIcon, TextDocumentIcon } from "../../assets";
 import style from "./desktop.module.css";
 import { DesktopIcon } from "./desktop-icon";
 import { DesktopWindow } from "./desktop-window";
-import type { FileType, OpenWindow } from "../../types";
-import { resumeText } from "../../assets/data/resumeText";
-import resumePdf from "../../assets/David-Iukuridze-Resume.pdf"
+import type { FileSystemItem, OpenWindow } from "../../types";
+import type { DesktopItem } from "../../data/desktopItems";
+import { initialDesktopItems } from "../../data/desktopItems";
+
 
 type DesktopProps = {
     openWindows: OpenWindow[];
@@ -15,54 +15,6 @@ type DesktopProps = {
     bringToFront: (id: OpenWindow["id"]) => void;
     minimizeWindow: (id: OpenWindow["id"]) => void;
 };
-
-type DesktopItem = {
-    id: string;
-    label: string;
-    icon: string;
-    position: {
-        x: number;
-        y: number;
-    }
-    type: FileType;
-    content?: string;
-    href?: string;
-    downloadName?: string;
-};
-
-const initialDesktopItems: DesktopItem[] = [
-    {
-        id: "my-computer",
-        label: "My Computer",
-        icon: MyComputerIcon,
-        position: { x: 8, y: 10 },
-        type: "folder",
-    },
-    {
-        id: "recycle-bin",
-        label: "Recycle Bin",
-        icon: RecycleBinEmptyIcon,
-        position: { x: 8, y: 88 },
-        type: "folder",
-    },
-    {
-        id: "text-document",
-        label: "David's Resume.txt",
-        icon: TextDocumentIcon,
-        position: { x: 8, y: 166 },
-        type: "text",
-        content: resumeText
-    },
-    {
-        id: "pdf",
-        label: "David's Resume.pdf",
-        icon: Pdf,
-        position: { x: 8, y: 244 },
-        type: "download",
-        href: resumePdf,
-        downloadName: "David-Iukuridze-Resume.pdf",
-    }
-];
 
 const GRID_START_X = 8;
 const GRID_START_Y = 10;
@@ -180,7 +132,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
         return startingPosition;
     };
 
-    const handleOpenWindow = (item : DesktopItem) => {
+    const handleOpenWindow = (item : FileSystemItem) => {
         if (item.type === "download") {
             if (!item.href) return;
 
@@ -196,15 +148,28 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
             return;
         }
 
+        if (item.type === "link") {
+            if (!item.href) return;
+
+            const link = document.createElement("a");
+
+            link.href = item.href;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer"
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            return;
+        }
+
         const alreadyOpen = openWindows.some(openWindow => openWindow.id === item.id);
 
         if (!alreadyOpen) {
             const newWindow: OpenWindow = {
-                id: item.id,
-                label: item.label,
-                icon: item.icon,
+                ...item,
                 type: item.type as OpenWindow["type"],
-                content: item.content,
                 isMinimized: false,
                 isMaximized: false,
                 position: getStartingPosition(),
@@ -282,6 +247,7 @@ export const Desktop = ({ openWindows, setOpenWindows, inFocus, windowZIndexes, 
                     key={item.id}
                     item={item}
                     onClose={() => handleCloseWindow(item)}
+                    onOpenWindow={handleOpenWindow}
                     zIndex={windowZIndexes[item.id] ?? 1}
                     onFocus={() => bringToFront(item.id)}
                     inFocus={item.id === inFocus}

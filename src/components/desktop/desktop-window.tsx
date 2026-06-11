@@ -1,14 +1,17 @@
 import style from "./desktop-window.module.css";
 import { useEffect, useRef } from "react";
 import { Resizable } from "re-resizable";
-import type { OpenWindow } from "../../types";
+import type { FileSystemItem, OpenWindow } from "../../types";
 import { WindowTitleBar } from "./window-title-bar";
 import { NotepadWindowContent } from "./notepad-window-content";
 import { ExplorerWindowContent } from "./explorer-window-content";
+import { ImageWindowContent } from "./image-window-content";
+
 
 type Props = {
     item: OpenWindow;
     onClose: () => void;
+    onOpenWindow: (item: FileSystemItem) => void;
     zIndex: number;
     onFocus: () => void;
     inFocus: boolean;
@@ -18,7 +21,7 @@ type Props = {
     updateWindowSize: (id: OpenWindow["id"], size: OpenWindow["size"]) => void;
 };
 
-export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinimize, onToggleMaximize, updateWindowPosition, updateWindowSize }: Props) => {
+export const DesktopWindow = ({ item, onClose, onOpenWindow, zIndex, onFocus, inFocus, onMinimize, onToggleMaximize, updateWindowPosition, updateWindowSize }: Props) => {
     const windowRef = useRef<HTMLDivElement>(null);
     const titleBarRef = useRef<HTMLDivElement>(null);
     const isDragging = useRef(false);
@@ -31,6 +34,8 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
         const windowElement = windowRef.current;
 
         const onMouseDown = (event:MouseEvent) => {
+            onFocus();
+
             if (item.isMaximized) return;
 
             event.stopPropagation();
@@ -70,7 +75,7 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
             window.removeEventListener('mouseup', onMouseUp);
         };
         return cleanup;
-    }, [item.id, item.isMaximized, updateWindowPosition]);
+    }, [item.id, item.isMaximized, onFocus, updateWindowPosition]);
 
     const resizeStartPosition = useRef({ x: 0, y: 0 });
 
@@ -87,7 +92,7 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
     const renderWindowContent = () => {
         if (item.type === "folder") {
             return (
-                <ExplorerWindowContent item={item} />
+                <ExplorerWindowContent item={item} onOpenWindow={onOpenWindow} />
             );
         }
 
@@ -95,6 +100,12 @@ export const DesktopWindow = ({ item, onClose, zIndex, onFocus, inFocus, onMinim
             return (
                 <NotepadWindowContent content={item.content ?? ""} />
             );
+        }
+
+        if (item.type === "image" && item.src) {
+            return (
+                <ImageWindowContent image={item.src} label={item.label}/>
+            )
         }
 
         return null;

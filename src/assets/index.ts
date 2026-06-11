@@ -23,3 +23,10 @@ export { default as RecycleBinEmptyIcon } from "./recycle-bin-empty.png";
 export { default as VolumeIcon } from "./volume.png";
 export { default as SecurityIcon } from "./security.png";
 export { default as Pdf } from "./pdf.png"
+export { default as Folder } from "./folder.png"
+export { default as URL } from "./url.png"
+export { default as JPG } from "./jpg.png"
+export { default as Roamio001 } from "./roamio-screenshot-001.jpeg"
+export { default as Roamio002 } from "./roamio-screenshot-002.jpeg"
+export { default as Roamio003 } from "./roamio-screenshot-003.jpeg"
+export { default as Roamio004 } from "./roamio-screenshot-004.jpeg"

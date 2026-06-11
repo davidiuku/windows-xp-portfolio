@@ -1,40 +1,38 @@
 import style from "./explorer-main-pane.module.css";
-
+import type { FileSystemItem } from "../../types";
 import type { Dispatch, SetStateAction, CSSProperties } from "react";
-import type { OpenWindow } from "../../types";
-
-type Drive ={
-    id: OpenWindow["id"];
-    label: OpenWindow["label"];
-    icon: OpenWindow["icon"];
-};
 
 type ExplorerMainPaneProps = {
-    drives: Drive[];
+    items: FileSystemItem[];
     selectedId: string | null;
     setSelectedId: Dispatch<SetStateAction<string | null>>;
+    onDoubleClick: (item: FileSystemItem) => void;
 };
 
-export function ExplorerMainPane({ drives, selectedId, setSelectedId }: ExplorerMainPaneProps) {
+export function ExplorerMainPane({ items, selectedId, setSelectedId, onDoubleClick }: ExplorerMainPaneProps) {
 
     return (
         <div className={style.mainPane} onClick={()=> {setSelectedId(null); }}>
-            {drives.map(drive => (
+            {items.map(item => (
                 <button
-                    key={drive.id}
-                    className={style.driveButton}
+                    key={item.id}
+                    className={style.itemButton}
                     onClick={(event)=> {
                         event.stopPropagation();
-                        setSelectedId(drive.id);
+                        setSelectedId(item.id);
+                    }}
+                    onDoubleClick={(event) => {
+                        event.stopPropagation();
+                        onDoubleClick(item)
                     }}
                 >
                     <span
-                        className={`${style.iconImage} ${selectedId === drive.id ? style.iconImageSelected : ""}`}
-                        style={{ "--icon-url": `url(${drive.icon})` } as CSSProperties}
+                        className={`${style.iconImage} ${selectedId === item.id ? style.iconImageSelected : ""}`}
+                        style={{ "--icon-url": `url(${item.icon})` } as CSSProperties}
                     >
-                        <img src={drive.icon} alt={drive.label} />
+                        <img src={item.icon} alt={item.label} />
                     </span>
-                    <span className={`${selectedId === drive.id ? style.driveLabelSelected : ""}`}>{drive.label}</span>
+                    <span className={`${selectedId === item.id ? style.itemLabelSelected : ""}`}>{item.label}</span>
                 </button>
             ))}
         </div>

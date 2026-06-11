@@ -6,9 +6,10 @@
     padding: 5px 0 0 5px;
     background-color: #ffffff;
     align-content: start;
+    user-select: none;
 }
 
-.driveButton {
+.itemButton {
     all: unset;
     display: flex;
     align-items: center;
@@ -48,7 +49,7 @@
     mask-position: center;
 }
 
-.driveLabelSelected {
+.itemLabelSelected {
     background-color: #316ac5;
     color: white;
 }
